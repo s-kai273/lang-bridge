@@ -74,8 +74,8 @@ def main():
     Main function to parse arguments and generate audio files.
     """
     parser = argparse.ArgumentParser(description="Generate audio files from input directory texts to output directory")
-    parser.add_argument("--input_dir", type=str, required=True, help="Input directory containing text files")
-    parser.add_argument("--output_dir", type=str, required=True, help="Output directory for generated audio files")
+    parser.add_argument("-i", "--input_dir", type=str, required=True, help="Input directory containing text files")
+    parser.add_argument("-o", "--output_dir", type=str, required=True, help="Output directory for generated audio files")
     args = parser.parse_args()
     
     input_files = list_files_in_dir(args.input_dir)
