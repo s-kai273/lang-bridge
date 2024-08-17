@@ -40,7 +40,7 @@ def text_to_speech(text, lang="en"):
     buffer.seek(0)
     return AudioSegment.from_file(buffer, format="mp3")
 
-def generate_audio_file(input_path, output_path, silence_duration=2000):
+def generate_audio_file(input_path, output_path, silence_duration):
     """
     Generate an audio file from a text file, with silence between lines.
 
@@ -76,6 +76,7 @@ def main():
     parser = argparse.ArgumentParser(description="Generate audio files from input directory texts to output directory")
     parser.add_argument("-i", "--input_dir", type=str, required=True, help="Input directory containing text files")
     parser.add_argument("-o", "--output_dir", type=str, required=True, help="Output directory for generated audio files")
+    parser.add_argument("--silence_duration", type=int, default=2000, help="Silence duration between text line (default: 2000)")
     args = parser.parse_args()
     
     input_files = list_files_in_dir(args.input_dir)
@@ -88,7 +89,7 @@ def main():
     for input_path in input_files:
         input_file_name = os.path.splitext(os.path.basename(input_path))[0]
         output_path = os.path.join(args.output_dir, f"{input_file_name}.mp3")
-        generate_audio_file(input_path, output_path)
+        generate_audio_file(input_path, output_path, args.silence_duration)
     
 if __name__ == "__main__":
     main()
