@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 from gtts import gTTS
 from io import BytesIO
 from pydub import AudioSegment
@@ -40,6 +41,11 @@ def text_to_speech(text, lang="en"):
     buffer.seek(0)
     return AudioSegment.from_file(buffer, format="mp3")
 
+def get_lang(text: str):
+    if bool(re.match(r"^[A-Za-z\s.,!?\'\"’-]+$", text[:10])):
+        return "en"
+    return "ja"
+
 def generate_audio_file(input_path, output_path, silence_duration):
     """
     Generate an audio file from a text file, with silence between lines.
@@ -58,7 +64,8 @@ def generate_audio_file(input_path, output_path, silence_duration):
                 text = line.strip()
                 if not text:
                     continue
-                combined_audio += text_to_speech(text) + silent_segment
+                lang = get_lang(text)
+                combined_audio += text_to_speech(text, lang) + silent_segment
     except Exception as e:
         print(f"Error processing file '{input_path}': {e}")
         return
